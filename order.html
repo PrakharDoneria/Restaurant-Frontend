@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - Pizza Paradise</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Pizza Paradise</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Menu</a></li>
+                    <li><a href="cart.html">Cart <span id="cart-count">0</span></a></li>
+                    <li><a href="track.html">Track Order</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-banner">
+        <div class="container">
+            <h2>Order Details</h2>
+        </div>
+    </section>
+
+    <section class="order-details-section">
+        <div class="container">
+            <div class="order-header">
+                <div class="order-id">
+                    <h3>Order #<span id="order-id-display">--</span></h3>
+                </div>
+                <div class="order-status">
+                    <span id="order-status-display">Loading...</span>
+                </div>
+            </div>
+
+            <div class="order-customer-info">
+                <h4>Customer Information</h4>
+                <p><strong>Name:</strong> <span id="customer-name-display">--</span></p>
+                <p><strong>Mobile:</strong> <span id="customer-mobile-display">--</span></p>
+            </div>
+
+            <div class="order-items">
+                <h4>Order Items</h4>
+                <div id="order-items-container">
+                    <!-- Order items will be loaded here dynamically -->
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading order details...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <h4>Order Summary</h4>
+                <div class="summary-row">
+                    <span>Total:</span>
+                    <span id="order-total">$0.00</span>
+                </div>
+            </div>
+
+            <div class="order-tracking">
+                <h4>Order Status</h4>
+                <div class="tracking-timeline">
+                    <div class="timeline-item" data-status="Preparing">
+                        <div class="timeline-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>Preparing</h5>
+                            <p>Your order is being prepared</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-status="In Transit">
+                        <div class="timeline-icon">
+                            <i class="fas fa-motorcycle"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>In Transit</h5>
+                            <p>Your order is on the way</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item" data-status="Delivered">
+                        <div class="timeline-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h5>Delivered</h5>
+                            <p>Your order has been delivered</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-button">
+                <a href="track.html" class="btn"><i class="fas fa-arrow-left"></i> Back to Track Orders</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Pizza Paradise</h2>
+                    <p>Delicious pizzas at your doorstep</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Menu</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="track.html">Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@pizzaparadise.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Pizza Street, Food City</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pizza Paradise. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/order.js"></script>
+</body>
+</html>
