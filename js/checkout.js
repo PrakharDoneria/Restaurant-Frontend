@@ -1,44 +1,49 @@
-document.addEventListener("DOMContentLoaded", () => {
-    displayOrderSummary();
+document.addEventListener("DOMContentLoaded", function () {
+    displayCartSummary();
     document.getElementById("checkout-form").addEventListener("submit", placeOrder);
 });
 
-function displayOrderSummary() {
+function displayCartSummary() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const orderSummary = document.getElementById("order-summary");
-    const totalPriceElement = document.getElementById("total-price");
-
-    orderSummary.innerHTML = "";
-    let totalPrice = 0;
+    const cartSummaryDiv = document.getElementById("cart-summary");
+    const totalAmountSpan = document.getElementById("total-amount");
 
     if (cart.length === 0) {
-        orderSummary.innerHTML = "<p>Your cart is empty.</p>";
-        totalPriceElement.textContent = "0.00";
+        cartSummaryDiv.innerHTML = "<p>Your cart is empty.</p>";
+        totalAmountSpan.textContent = "$0.00";
         return;
     }
 
+    let totalAmount = 0;
+    let cartHTML = "<ul>";
+
     cart.forEach(item => {
-        const itemElement = document.createElement("div");
-        itemElement.classList.add("order-item");
-        itemElement.innerHTML = `
-            <h3>${item.name}</h3>
-            <p>Quantity: ${item.quantity}</p>
-            <p>Price: $${(item.price * item.quantity).toFixed(2)}</p>
+        totalAmount += item.price * item.quantity;
+        cartHTML += `
+            <li>
+                <strong>${item.name}</strong> - ${item.quantity} x $${item.price.toFixed(2)}
+                = $${(item.price * item.quantity).toFixed(2)}
+            </li>
         `;
-        orderSummary.appendChild(itemElement);
-        totalPrice += item.price * item.quantity;
     });
 
-    totalPriceElement.textContent = totalPrice.toFixed(2);
+    cartHTML += "</ul>";
+    cartSummaryDiv.innerHTML = cartHTML;
+    totalAmountSpan.textContent = `$${totalAmount.toFixed(2)}`;
 }
 
 async function placeOrder(event) {
-    event.preventDefault();
+    event.preventDefault(); // Prevent default form submission
 
-    const name = document.getElementById("name").value;
-    const mobile = document.getElementById("mobile").value;
-    const address = document.getElementById("address").value;
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+    const address = document.getElementById("address").value.trim();
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (!name || !mobile || !address) {
+        alert("Please fill in all fields.");
+        return;
+    }
 
     if (cart.length === 0) {
         alert("Your cart is empty. Add some pizzas first!");
@@ -46,11 +51,11 @@ async function placeOrder(event) {
     }
 
     const orderData = {
-        name,
-        mobile,
-        address,
+        name: name,
+        mobile: mobile,
+        address: address,
         pizzas: cart.map(item => ({
-            pizza_id: item.id,
+            pizzaId: item.id,  // 🔥 Ensure this matches backend's expected key
             quantity: item.quantity
         }))
     };
@@ -61,19 +66,21 @@ async function placeOrder(event) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(orderData)
+            body: JSON.stringify(orderData) // ✅ Correctly send order details in the body
         });
 
         const data = await response.json();
 
         if (response.ok) {
             localStorage.removeItem("cart"); // Clear cart after order
-            document.getElementById("order-message").textContent = `Order placed successfully! Order ID: ${data.order_id}`;
+            document.getElementById("order-message").textContent = `✅ Order placed successfully! Order ID: ${data.order_id}`;
+            document.getElementById("cart-summary").innerHTML = "<p>Your cart is empty.</p>";
+            document.getElementById("total-amount").textContent = "$0.00";
         } else {
-            document.getElementById("order-message").textContent = "Error placing order. Try again.";
+            document.getElementById("order-message").textContent = data.detail ? JSON.stringify(data.detail) : "❌ Error placing order.";
         }
     } catch (error) {
         console.error("Error placing order:", error);
-        document.getElementById("order-message").textContent = "Server error. Try again later.";
+        document.getElementById("order-message").textContent = "❌ Server error. Try again later.";
     }
 }

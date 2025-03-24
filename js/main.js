@@ -1,17 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
     fetchPizzas();
+    updateCartCount();
 
-    document.getElementById("search").addEventListener("input", (e) => {
-        filterPizzas(e.target.value);
-    });
+    const searchInput = document.getElementById("search");
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            filterPizzas(e.target.value);
+        });
+    }
 });
 
 let allPizzas = [];
+
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+
+    const cartCountElement = document.getElementById("cart-count");
+    if (cartCountElement) {
+        cartCountElement.textContent = totalQuantity;
+    }
+
+    return totalQuantity;
+}
 
 async function fetchPizzas() {
     try {
         const response = await fetch("http://127.0.0.1:8000/api/user/pizzas");
         const data = await response.json();
+
+        if (!data.pizzas || data.pizzas.length === 0) {
+            throw new Error("No pizzas found");
+        }
+
         allPizzas = data.pizzas;
         displayPizzas(allPizzas);
     } catch (error) {
@@ -29,7 +50,7 @@ function displayPizzas(pizzas) {
     const pizzaList = document.getElementById("pizza-list");
     pizzaList.innerHTML = ""; // Clear previous entries
 
-    if (pizzas.length === 0) {
+    if (!pizzas || pizzas.length === 0) {
         pizzaList.innerHTML = `
             <div class="col-span-full text-center text-gray-600">
                 <p>No pizzas found.</p>
@@ -45,10 +66,10 @@ function displayPizzas(pizzas) {
             <img src="${pizza.image_url}" alt="${pizza.name}" class="w-full h-64 object-cover">
             <div class="p-4">
                 <h2 class="text-xl font-bold mb-2">${pizza.name}</h2>
-                <p class="text-gray-600 mb-1">Category: ${pizza.category}</p>
+                <p class="text-gray-600 mb-1">Category ID: ${pizza.category_id}</p>
                 <p class="text-red-600 font-bold mb-4">Price: $${pizza.price.toFixed(2)}</p>
                 <button 
-                    onclick="addToCart('${pizza.id}', '${pizza.name}', ${pizza.price})" 
+                    onclick="addToCart('${pizza._id}', '${pizza.name}', ${pizza.price})" 
                     class="w-full py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
                 >
                     Add to Cart
@@ -60,10 +81,15 @@ function displayPizzas(pizzas) {
 }
 
 function filterPizzas(query) {
+    if (!query.trim()) {
+        displayPizzas(allPizzas);
+        return;
+    }
+
     const filtered = allPizzas.filter(pizza => 
-        pizza.name.toLowerCase().includes(query.toLowerCase()) ||
-        pizza.category.toLowerCase().includes(query.toLowerCase())
+        pizza.name.toLowerCase().includes(query.toLowerCase())
     );
+    
     displayPizzas(filtered);
 }
 
@@ -79,7 +105,8 @@ function addToCart(id, name, price) {
 
     localStorage.setItem("cart", JSON.stringify(cart));
     
-    // Create a more modern toast notification
+    updateCartCount();
+    
     const toast = document.createElement('div');
     toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
     toast.textContent = `${name} added to cart!`;

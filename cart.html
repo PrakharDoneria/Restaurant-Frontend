@@ -3,29 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+    <title>Your Pizza Cart | PizzaVerse</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="pizzas.html">Pizzas</a></li>
-                <li><a href="cart.html">Cart</a></li>
-                <li><a href="checkout.html">Checkout</a></li>
-                <li><a href="order_status.html">Order Status</a></li>
-            </ul>
-        </nav>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-inter">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-black tracking-tight flex items-center">
+                <img src="/api/placeholder/50/50" alt="PizzaVerse Logo" class="mr-3 rounded-full">
+                PizzaVerse
+            </div>
+            <nav>
+                <ul class="flex space-x-6 items-center">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="pizzas.html" class="nav-link">Pizzas</a></li>
+                    <li>
+                        <a href="cart.html" class="nav-link flex items-center">
+                            <i data-feather="shopping-cart" class="mr-2"></i>
+                            Cart 
+                            <span id="cart-count" class="bg-white text-blue-600 rounded-full px-2 py-1 text-xs ml-2">0</span>
+                        </a>
+                    </li>
+                    <li><a href="checkout.html" class="nav-link">Checkout</a></li>
+                    <li><a href="order_status.html" class="nav-link">Order Status</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <h1>Your Cart</h1>
-        <div id="cart-items"></div>
-        <h2>Total: $<span id="total-price">0.00</span></h2>
-        <button onclick="goToCheckout()">Proceed to Checkout</button>
+    <!-- Cart Section -->
+    <main class="container mx-auto px-4 py-12">
+        <section class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
+            <h1 class="text-4xl font-extrabold text-blue-800 mb-6 text-center">Your Cart</h1>
+
+            <div id="cart-items" class="space-y-6">
+                <!-- Cart items will be dynamically populated here -->
+                <p id="empty-cart-message" class="text-gray-500 text-center py-8 bg-gray-100 rounded-lg">
+                    Your cart is empty. Why not add some delicious pizzas?
+                </p>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-300">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-xl font-semibold">Total:</span>
+                    <span class="text-2xl font-bold text-blue-600">$<span id="total-price">0.00</span></span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <button 
+                        id="proceed-checkout" 
+                        onclick="goToCheckout()" 
+                        class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-3 rounded-lg font-semibold hover:scale-105 transition transform duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        Proceed to Checkout
+                    </button>
+                    <button 
+                        id="continue-shopping" 
+                        onclick="window.location.href='pizzas.html'" 
+                        class="bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
+                    >
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">PizzaVerse</h3>
+                <p class="text-gray-300">Delivering happiness, one slice at a time.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="text-gray-300 hover:text-blue-400">Home</a></li>
+                    <li><a href="pizzas.html" class="text-gray-300 hover:text-blue-400">Menu</a></li>
+                    <li><a href="cart.html" class="text-gray-300 hover:text-blue-400">Cart</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-3">Connect</h4>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="facebook"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="instagram"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+        });
+    </script>
     <script src="js/cart.js"></script>
 </body>
 </html>

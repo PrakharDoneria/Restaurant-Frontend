@@ -3,46 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Pizza Checkout | Final Step</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="pizzas.html">Pizzas</a></li>
-                <li><a href="cart.html">Cart</a></li>
-                <li><a href="checkout.html">Checkout</a></li>
-                <li><a href="order_status.html">Order Status</a></li>
-            </ul>
-        </nav>
+<body class="bg-gray-50 font-inter text-gray-800">
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="header-container max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="logo text-2xl font-bold text-red-600 hover:text-red-700 transition-colors">Pizza Place</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="text-gray-600 hover:text-red-600 transition-colors">Home</a></li>
+                    <li><a href="pizzas.html" class="text-gray-600 hover:text-red-600 transition-colors">Menu</a></li>
+                    <li><a href="cart.html" class="text-gray-600 hover:text-red-600 transition-colors">Cart</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <h1>Checkout</h1>
+    <main class="checkout-page max-w-4xl mx-auto px-4 py-8">
+        <div class="checkout-container grid md:grid-cols-2 gap-8">
+            <section class="order-summary bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-6 text-gray-900">Your Order Summary</h2>
+                <div id="cart-summary" class="cart-summary-details space-y-4"></div>
+                <div class="cart-total flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+                    <span class="text-xl font-semibold">Total:</span>
+                    <strong class="text-2xl font-bold text-red-600">$<span id="total-amount">0.00</span></strong>
+                </div>
+            </section>
 
-        <h2>Order Summary</h2>
-        <div id="order-summary"></div>
-        <h2>Total: $<span id="total-price">0.00</span></h2>
+            <section class="customer-details bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-6 text-gray-900">Enter Your Details</h2>
+                <form id="checkout-form" class="checkout-form space-y-6" aria-label="Checkout Form">
+                    <div class="form-group">
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Full Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name"
+                            required 
+                            placeholder="Enter your full name"
+                            aria-required="true"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                    </div>
 
-        <h2>Enter Your Details</h2>
-        <form id="checkout-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" required>
+                    <div class="form-group">
+                        <label for="mobile" class="block mb-2 text-sm font-medium text-gray-700">Mobile Number</label>
+                        <input 
+                            type="tel" 
+                            id="mobile" 
+                            name="mobile"
+                            pattern="[0-9]{10}" 
+                            required 
+                            placeholder="10-digit mobile number"
+                            aria-required="true"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                    </div>
 
-            <label for="mobile">Mobile:</label>
-            <input type="text" id="mobile" required>
+                    <div class="form-group">
+                        <label for="address" class="block mb-2 text-sm font-medium text-gray-700">Delivery Address</label>
+                        <textarea 
+                            id="address" 
+                            name="address"
+                            required 
+                            placeholder="Complete delivery address"
+                            aria-required="true"
+                            rows="4"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        ></textarea>
+                    </div>
 
-            <label for="address">Address:</label>
-            <textarea id="address" required></textarea>
+                    <div class="form-group payment-options">
+                        <label class="block mb-2 text-sm font-medium text-gray-700">Payment Method</label>
+                        <div class="payment-methods space-y-2">
+                            <label class="payment-option inline-flex items-center">
+                                <input 
+                                    type="radio" 
+                                    name="payment" 
+                                    value="cash" 
+                                    checked
+                                    class="form-radio text-red-600 focus:ring-red-500"
+                                >
+                                <span class="ml-2">Cash on Delivery</span>
+                            </label>
+                            <label class="payment-option inline-flex items-center">
+                                <input 
+                                    type="radio" 
+                                    name="payment" 
+                                    value="card"
+                                    class="form-radio text-red-600 focus:ring-red-500"
+                                >
+                                <span class="ml-2">Credit/Debit Card</span>
+                            </label>
+                        </div>
+                    </div>
 
-            <button type="submit">Place Order</button>
-        </form>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    >
+                        Place Order
+                    </button>
+                </form>
+            </section>
 
-        <p id="order-message"></p>
+            <div 
+                id="order-message" 
+                class="order-status-message col-span-full text-center p-4 bg-green-100 text-green-800 rounded-lg" 
+                aria-live="polite"
+            ></div>
+        </div>
     </main>
 
-    <script src="js/checkout.js"></script>
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="footer-content max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <div class="footer-section">
+                <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-red-400 transition-colors">Home</a></li>
+                    <li><a href="pizzas.html" class="hover:text-red-400 transition-colors">Menu</a></li>
+                    <li><a href="cart.html" class="hover:text-red-400 transition-colors">Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
+                <p>Email: <a href="mailto:support@pizzaplace.com" class="hover:text-red-400 transition-colors">support@pizzaplace.com</a></p>
+                <p>Phone: <a href="tel:5551234567" class="hover:text-red-400 transition-colors">(555) 123-4567</a></p>
+            </div>
+            <div class="copyright text-gray-400 md:text-right">
+                © 2024 Pizza Place. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/checkout.js" defer></script>
 </body>
 </html>
