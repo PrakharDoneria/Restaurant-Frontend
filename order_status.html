@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+    <title>Order Status</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,12 +20,15 @@
     </header>
 
     <main>
-        <h1>Your Cart</h1>
-        <div id="cart-items"></div>
-        <h2>Total: $<span id="total-price">0.00</span></h2>
-        <button onclick="goToCheckout()">Proceed to Checkout</button>
+        <h1>Check Order Status</h1>
+
+        <label for="order-id">Enter Order ID:</label>
+        <input type="text" id="order-id" required>
+        <button onclick="fetchOrderStatus()">Check Status</button>
+
+        <div id="order-details"></div>
     </main>
 
-    <script src="js/cart.js"></script>
+    <script src="js/order_status.js"></script>
 </body>
 </html>
