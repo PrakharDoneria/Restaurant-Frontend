@@ -23,7 +23,7 @@ async function fetchOrderStatus() {
     }
 
     try {
-        const response = await fetch(`http://https://restaurant-backend-lime.vercel.app/api/user/status?id=${orderId}`);
+        const response = await fetch(`https://https://restaurant-backend-lime.vercel.app/api/user/status?id=${orderId}`);
 
         if (!response.ok) {
             throw new Error("Order not found");

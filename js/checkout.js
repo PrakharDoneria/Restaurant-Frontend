@@ -61,7 +61,7 @@ async function placeOrder(event) {
     };
 
     try {
-        const response = await fetch("http://https://restaurant-backend-lime.vercel.app/api/user/order", {
+        const response = await fetch("https://https://restaurant-backend-lime.vercel.app/api/user/order", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
