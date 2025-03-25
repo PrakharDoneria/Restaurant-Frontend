@@ -26,7 +26,7 @@ function updateCartCount() {
 
 async function fetchPizzas() {
     try {
-        const response = await fetch("http://127.0.0.1:8000/api/user/pizzas");
+        const response = await fetch("http://https://restaurant-backend-lime.vercel.app/api/user/pizzas");
         const data = await response.json();
 
         if (!data.pizzas || data.pizzas.length === 0) {
