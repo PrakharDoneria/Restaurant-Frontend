@@ -55,7 +55,7 @@ async function placeOrder(event) {
         mobile: mobile,
         address: address,
         pizzas: cart.map(item => ({
-            pizzaId: item.id,  // 🔥 Ensure this matches backend's expected key
+            pizzaId: item.id,
             quantity: item.quantity
         }))
     };
@@ -66,16 +66,14 @@ async function placeOrder(event) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(orderData) // ✅ Correctly send order details in the body
+            body: JSON.stringify(orderData)
         });
 
         const data = await response.json();
 
         if (response.ok) {
             localStorage.removeItem("cart"); // Clear cart after order
-            document.getElementById("order-message").textContent = `✅ Order placed successfully! Order ID: ${data.order_id}`;
-            document.getElementById("cart-summary").innerHTML = "<p>Your cart is empty.</p>";
-            document.getElementById("total-amount").textContent = "$0.00";
+            showSuccessModal(data.order_id);
         } else {
             document.getElementById("order-message").textContent = data.detail ? JSON.stringify(data.detail) : "❌ Error placing order.";
         }
@@ -83,4 +81,49 @@ async function placeOrder(event) {
         console.error("Error placing order:", error);
         document.getElementById("order-message").textContent = "❌ Server error. Try again later.";
     }
+}
+
+function showSuccessModal(orderId) {
+    const modalContainer = document.getElementById('success-modal-container');
+    
+    // Create modal HTML
+    modalContainer.innerHTML = `
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-8 text-center transform transition-all duration-300 scale-100 hover:scale-105">
+            <div class="bg-green-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Order Confirmed!</h2>
+            
+            <p class="text-gray-600 mb-6">
+                Your delicious pizza is on its way. 
+                <span class="block font-semibold text-green-600 mt-2">
+                    Order ID: ${orderId}
+                </span>
+            </p>
+            
+            <div class="flex justify-center space-x-4">
+                <button 
+                    onclick="window.location.href='index.html'" 
+                    class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center space-x-2"
+                >
+                    <span>Back to Home</span>
+                </button>
+                
+                <button 
+                    onclick="document.getElementById('success-modal-container').innerHTML = ''" 
+                    class="bg-gray-200 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-300 transition-colors flex items-center"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+    `;
 }

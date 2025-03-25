@@ -41,6 +41,9 @@ async function fetchPizzas() {
         pizzaList.innerHTML = `
             <div class="col-span-full text-center text-red-600">
                 <p>Unable to load pizzas. Please try again later.</p>
+                <button onclick="fetchPizzas()" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                    Retry
+                </button>
             </div>
         `;
     }
@@ -61,16 +64,36 @@ function displayPizzas(pizzas) {
 
     pizzas.forEach(pizza => {
         const pizzaItem = document.createElement("div");
-        pizzaItem.classList.add("pizza-item", "rounded-lg", "overflow-hidden");
+        pizzaItem.classList.add(
+            "pizza-item", 
+            "bg-white", 
+            "rounded-lg", 
+            "overflow-hidden", 
+            "transform", 
+            "transition", 
+            "duration-300", 
+            "hover:scale-105", 
+            "shadow-lg", 
+            "hover:shadow-2xl"
+        );
         pizzaItem.innerHTML = `
-            <img src="${pizza.image_url}" alt="${pizza.name}" class="w-full h-64 object-cover">
+            <div class="relative">
+                <img 
+                    src="${pizza.image_url}" 
+                    alt="${pizza.name}" 
+                    class="w-full h-64 object-cover transition duration-300 transform hover:scale-110"
+                >
+                <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-sm">
+                    New
+                </div>
+            </div>
             <div class="p-4">
-                <h2 class="text-xl font-bold mb-2">${pizza.name}</h2>
-                <p class="text-gray-600 mb-1">Category ID: ${pizza.category_id}</p>
+                <h2 class="text-xl font-bold mb-2 text-blue-800">${pizza.name}</h2>
+                <p class="text-gray-600 mb-1 truncate">Category: ${getCategoryName(pizza.category_id)}</p>
                 <p class="text-red-600 font-bold mb-4">Price: $${pizza.price.toFixed(2)}</p>
                 <button 
                     onclick="addToCart('${pizza._id}', '${pizza.name}', ${pizza.price})" 
-                    class="w-full py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+                    class="w-full py-2 rounded-md bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:from-blue-700 hover:to-blue-900 transition transform hover:scale-105"
                 >
                     Add to Cart
                 </button>
@@ -80,6 +103,17 @@ function displayPizzas(pizzas) {
     });
 }
 
+function getCategoryName(categoryId) {
+    // Placeholder function - replace with actual category mapping
+    const categories = {
+        1: 'Classic',
+        2: 'Vegetarian',
+        3: 'Premium',
+        4: 'Specialty'
+    };
+    return categories[categoryId] || 'Unknown';
+}
+
 function filterPizzas(query) {
     if (!query.trim()) {
         displayPizzas(allPizzas);
@@ -87,7 +121,8 @@ function filterPizzas(query) {
     }
 
     const filtered = allPizzas.filter(pizza => 
-        pizza.name.toLowerCase().includes(query.toLowerCase())
+        pizza.name.toLowerCase().includes(query.toLowerCase()) ||
+        getCategoryName(pizza.category_id).toLowerCase().includes(query.toLowerCase())
     );
     
     displayPizzas(filtered);
@@ -107,12 +142,19 @@ function addToCart(id, name, price) {
     
     updateCartCount();
     
+    showToast(`${name} added to cart!`);
+}
+
+function showToast(message) {
     const toast = document.createElement('div');
-    toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
-    toast.textContent = `${name} added to cart!`;
+    toast.className = 'toast-notification fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+    toast.textContent = message;
     document.body.appendChild(toast);
     
     setTimeout(() => {
-        toast.remove();
+        toast.classList.add('animate-fadeOut');
+        setTimeout(() => {
+            toast.remove();
+        }, 500);
     }, 3000);
 }

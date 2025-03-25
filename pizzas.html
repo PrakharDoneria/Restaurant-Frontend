@@ -6,40 +6,79 @@
     <title>PizzaVerse - Craft Your Perfect Slice</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        /* Custom animations and styles */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pizza-item {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .pizza-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+        }
+        .toast-notification {
+            animation: fadeIn 0.5s ease-out;
+        }
+        /* Responsive mobile menu */
+        @media (max-width: 768px) {
+            .mobile-menu-hidden {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-inter">
     <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="text-2xl font-black tracking-tight flex items-center">
-                <img src="/api/placeholder/50/50" alt="PizzaVerse Logo" class="mr-3 rounded-full">
+                <img src="assets\logo.png" alt="PizzaVerse Logo" class="mr-3 rounded-full">
                 PizzaVerse
             </div>
-            <nav>
+            <nav class="hidden md:block">
                 <ul class="flex space-x-6 items-center">
-                    <li><a href="index.html" class="nav-link">Home</a></li>
-                    <li><a href="pizzas.html" class="nav-link">Pizzas</a></li>
+                    <li><a href="index.html" class="nav-link hover:text-blue-200 transition">Home</a></li>
+                    <li><a href="pizzas.html" class="nav-link hover:text-blue-200 transition">Pizzas</a></li>
                     <li>
-                        <a href="cart.html" class="nav-link flex items-center">
+                        <a href="cart.html" class="nav-link flex items-center hover:text-blue-200 transition">
                             <i data-feather="shopping-cart" class="mr-2"></i>
                             Cart 
                             <span id="cart-count" class="bg-white text-blue-600 rounded-full px-2 py-1 text-xs ml-2">0</span>
                         </a>
                     </li>
-                    <li><a href="checkout.html" class="nav-link">Checkout</a></li>
-                    <li><a href="order_status.html" class="nav-link">Order Status</a></li>
+                    <li><a href="checkout.html" class="nav-link hover:text-blue-200 transition">Checkout</a></li>
+                    <li><a href="order_status.html" class="nav-link hover:text-blue-200 transition">Order Status</a></li>
                 </ul>
             </nav>
+            <div class="md:hidden">
+                <button id="mobile-menu-toggle" class="text-white">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
         </div>
     </header>
 
+    <!-- Mobile Menu (hidden by default) -->
+    <div id="mobile-menu" class="hidden bg-blue-700 text-white md:hidden">
+        <ul class="py-4 space-y-2 text-center">
+            <li><a href="index.html" class="block py-2 hover:bg-blue-600">Home</a></li>
+            <li><a href="pizzas.html" class="block py-2 hover:bg-blue-600">Pizzas</a></li>
+            <li><a href="cart.html" class="block py-2 hover:bg-blue-600">Cart</a></li>
+            <li><a href="checkout.html" class="block py-2 hover:bg-blue-600">Checkout</a></li>
+            <li><a href="order_status.html" class="block py-2 hover:bg-blue-600">Order Status</a></li>
+        </ul>
+    </div>
+
     <main class="container mx-auto px-4 py-12">
         <section class="text-center mb-16">
-            <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800 mb-4">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800 mb-4">
                 Craft Your Perfect Slice
             </h1>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
                 Explore artisan pizzas crafted with passion, featuring the freshest ingredients and bold flavors.
             </p>
         </section>
@@ -89,6 +128,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             feather.replace();
+
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
         });
     </script>
     <script src="js/main.js"></script>

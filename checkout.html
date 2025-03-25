@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,34 +7,68 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom smooth scroll and focus styles */
+        html {
+            scroll-behavior: smooth;
+        }
+        input:focus, textarea:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5);
+            border-color: #ef4444;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            .header-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-inter text-gray-800">
-    <header class="bg-white shadow-md sticky top-0 z-50">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 font-inter text-gray-800 leading-relaxed">
+    <header class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300 ease-in-out">
         <div class="header-container max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="index.html" class="logo text-2xl font-bold text-red-600 hover:text-red-700 transition-colors">Pizza Place</a>
+            <a href="index.html" class="logo text-3xl font-bold text-red-600 hover:text-red-700 transition-colors transform hover:scale-105">
+                🍕 Pizza Place
+            </a>
             <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="index.html" class="text-gray-600 hover:text-red-600 transition-colors">Home</a></li>
-                    <li><a href="pizzas.html" class="text-gray-600 hover:text-red-600 transition-colors">Menu</a></li>
-                    <li><a href="cart.html" class="text-gray-600 hover:text-red-600 transition-colors">Cart</a></li>
-                </ul>
+                <!-- <ul class="flex space-x-6 items-center">
+                    <li><a href="index.html" class="text-gray-600 hover:text-red-600 transition-colors hover:underline">Home</a></li>
+                    <li><a href="pizzas.html" class="text-gray-600 hover:text-red-600 transition-colors hover:underline">Menu</a></li>
+                    <li>
+                        <a href="cart.html" class="text-gray-600 hover:text-red-600 transition-colors hover:underline relative">
+                            Cart
+                            <span class="absolute -top-2 -right-4 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">0</span>
+                        </a>
+                    </li>
+                </ul> -->
             </nav>
         </div>
     </header>
 
     <main class="checkout-page max-w-4xl mx-auto px-4 py-8">
         <div class="checkout-container grid md:grid-cols-2 gap-8">
-            <section class="order-summary bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-6 text-gray-900">Your Order Summary</h2>
-                <div id="cart-summary" class="cart-summary-details space-y-4"></div>
-                <div class="cart-total flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
-                    <span class="text-xl font-semibold">Total:</span>
-                    <strong class="text-2xl font-bold text-red-600">$<span id="total-amount">0.00</span></strong>
+            <section class="order-summary bg-white rounded-2xl shadow-2xl p-8 transform transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold mb-6 text-gray-900 border-b-4 border-red-500 pb-2">Your Order Summary</h2>
+                <div id="cart-summary" class="cart-summary-details space-y-4 min-h-[200px]"></div>
+                <div class="cart-total flex justify-between items-center mt-6 pt-4 border-t-2 border-dashed border-gray-200">
+                    <span class="text-xl font-semibold text-gray-700">Total:</span>
+                    <strong class="text-3xl font-bold text-red-600">$<span id="total-amount">0.00</span></strong>
                 </div>
             </section>
 
-            <section class="customer-details bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-6 text-gray-900">Enter Your Details</h2>
+            <section class="customer-details bg-white rounded-2xl shadow-2xl p-8 transform transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-bold mb-6 text-gray-900 border-b-4 border-red-500 pb-2">Enter Your Details</h2>
                 <form id="checkout-form" class="checkout-form space-y-6" aria-label="Checkout Form">
                     <div class="form-group">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Full Name</label>
@@ -45,7 +79,7 @@
                             required 
                             placeholder="Enter your full name"
                             aria-required="true"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300"
                         >
                     </div>
 
@@ -59,7 +93,7 @@
                             required 
                             placeholder="10-digit mobile number"
                             aria-required="true"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300"
                         >
                     </div>
 
@@ -72,14 +106,14 @@
                             placeholder="Complete delivery address"
                             aria-required="true"
                             rows="4"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300"
                         ></textarea>
                     </div>
 
                     <div class="form-group payment-options">
                         <label class="block mb-2 text-sm font-medium text-gray-700">Payment Method</label>
                         <div class="payment-methods space-y-2">
-                            <label class="payment-option inline-flex items-center">
+                            <label class="payment-option inline-flex items-center hover:bg-gray-50 p-2 rounded-lg transition-colors">
                                 <input 
                                     type="radio" 
                                     name="payment" 
@@ -87,54 +121,64 @@
                                     checked
                                     class="form-radio text-red-600 focus:ring-red-500"
                                 >
-                                <span class="ml-2">Cash on Delivery</span>
+                                <span class="ml-2">💵 Cash on Delivery</span>
                             </label>
-                            <label class="payment-option inline-flex items-center">
+                            <label class="payment-option inline-flex items-center hover:bg-gray-50 p-2 rounded-lg transition-all">
                                 <input 
                                     type="radio" 
                                     name="payment" 
                                     value="card"
                                     class="form-radio text-red-600 focus:ring-red-500"
                                 >
-                                <span class="ml-2">Credit/Debit Card</span>
+                                <span class="ml-2">💳 UPI</span>
                             </label>
                         </div>
                     </div>
 
                     <button 
                         type="submit" 
-                        class="btn btn-primary w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                        class="btn btn-primary w-full bg-red-600 text-white py-4 rounded-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center justify-center space-x-2"
                     >
-                        Place Order
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Place Order</span>
                     </button>
                 </form>
             </section>
 
             <div 
                 id="order-message" 
-                class="order-status-message col-span-full text-center p-4 bg-green-100 text-green-800 rounded-lg" 
+                class="order-status-message col-span-full text-center p-4 bg-green-100 text-green-800 rounded-lg opacity-0 transition-all duration-500" 
                 aria-live="polite"
             ></div>
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-white py-12">
+    <!-- Modal Container for Success -->
+    <div id="success-modal-container"></div>
+
+    <footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12 mt-8">
         <div class="footer-content max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
             <div class="footer-section">
-                <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                <h3 class="text-xl font-semibold mb-4 text-red-400">Quick Links</h3>
                 <ul class="space-y-2">
-                    <li><a href="index.html" class="hover:text-red-400 transition-colors">Home</a></li>
-                    <li><a href="pizzas.html" class="hover:text-red-400 transition-colors">Menu</a></li>
-                    <li><a href="cart.html" class="hover:text-red-400 transition-colors">Cart</a></li>
+                    <li><a href="index.html" class="hover:text-red-300 transition-colors">Home</a></li>
+                    <li><a href="pizzas.html" class="hover:text-red-300 transition-colors">Menu</a></li>
+                    <li><a href="cart.html" class="hover:text-red-300 transition-colors">Cart</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
-                <p>Email: <a href="mailto:support@pizzaplace.com" class="hover:text-red-400 transition-colors">support@pizzaplace.com</a></p>
-                <p>Phone: <a href="tel:5551234567" class="hover:text-red-400 transition-colors">(555) 123-4567</a></p>
+                <h3 class="text-xl font-semibold mb-4 text-red-400">Contact Us</h3>
+                <p>Email: <a href="mailto:support@pizzaplace.com" class="hover:text-red-300 transition-colors">support@pizzaplace.com</a></p>
+                <p>Phone: <a href="tel:5551234567" class="hover:text-red-300 transition-colors">(555) 123-4567</a></p>
             </div>
-            <div class="copyright text-gray-400 md:text-right">
-                © 2024 Pizza Place. All Rights Reserved.
+            <div class="copyright text-gray-400 md:text-right flex flex-col items-end">
+                <span>© 2024 Pizza Place. All Rights Reserved.</span>
+                <div class="flex space-x-2 mt-2">
+                    <a href="#" class="text-gray-300 hover:text-white">Privacy</a>
+                    <a href="#" class="text-gray-300 hover:text-white">Terms</a>
+                </div>
             </div>
         </div>
     </footer>

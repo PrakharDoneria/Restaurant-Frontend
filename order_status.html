@@ -1,34 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Status</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Pizza Place | Order Status</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        input:focus {
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.5);
+            border-color: #ef4444;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="pizzas.html">Pizzas</a></li>
-                <li><a href="cart.html">Cart</a></li>
-                <li><a href="checkout.html">Checkout</a></li>
-                <li><a href="order_status.html">Order Status</a></li>
-            </ul>
-        </nav>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex flex-col">
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <nav>
+                <ul class="flex space-x-6 justify-center items-center">
+                    <li><a href="index.html" class="text-gray-600 hover:text-red-600 transition-colors">Home</a></li>
+                    <li><a href="pizzas.html" class="text-gray-600 hover:text-red-600 transition-colors">Pizzas</a></li>
+                    <li><a href="cart.html" class="text-gray-600 hover:text-red-600 transition-colors">Cart</a></li>
+                    <li><a href="checkout.html" class="text-gray-600 hover:text-red-600 transition-colors">Checkout</a></li>
+                    <li><a href="order_status.html" class="text-red-600 font-semibold">Order Status</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <h1>Check Order Status</h1>
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-xl">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 transform transition-all hover:shadow-xl">
+            <h1 class="text-3xl font-bold mb-6 text-center text-gray-900 border-b-4 border-red-500 pb-3">
+                🍕 Check Order Status
+            </h1>
 
-        <label for="order-id">Enter Order ID:</label>
-        <input type="text" id="order-id" required>
-        <button onclick="fetchOrderStatus()">Check Status</button>
+            <div class="space-y-6">
+                <div class="form-group">
+                    <label for="order-id" class="block mb-2 text-sm font-medium text-gray-700">
+                        Enter Order ID
+                    </label>
+                    <input 
+                        type="text" 
+                        id="order-id" 
+                        required 
+                        placeholder="Example: ORD-12345"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300"
+                    >
+                </div>
 
-        <div id="order-details"></div>
+                <button 
+                    onclick="fetchOrderStatus()" 
+                    class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <span>Check Status</span>
+                </button>
+
+                <div 
+                    id="order-details" 
+                    class="mt-6 p-4 bg-gray-100 rounded-lg min-h-[200px] flex items-center justify-center text-gray-600"
+                >
+                    <p>Enter an Order ID to view details</p>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <script src="js/order_status.js"></script>
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2024 Pizza Place. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/orders.js"></script>
 </body>
 </html>
