@@ -5,156 +5,283 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Pizza Cart | PizzaVerse</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
-        /* Custom animations and additional styles */
+        /* Base styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Custom animations and transitions */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
         .cart-item {
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.5s ease-out forwards;
             transition: all 0.3s ease;
         }
+        
         .cart-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+        
         .quantity-input {
             max-width: 80px;
             text-align: center;
-            border: 1px solid #d1d5db;
+            border: 1px solid #e5e7eb;
             border-radius: 0.375rem;
-            padding: 0.25rem 0.5rem;
+            padding: 0.5rem;
+            transition: all 0.2s ease;
         }
-        .remove-btn {
+        
+        .quantity-input:focus {
+            outline: none;
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+        
+        .btn {
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .remove-btn:hover {
-            background-color: #ef4444;
-            color: white;
+        
+        .btn:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+        
+        /* Hero background pattern */
+        .bg-hero-pattern {
+            background-color: #f9fafb;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f87171' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        /* Empty cart animation */
+        .empty-cart-animation {
+            animation: scaleIn 0.5s ease-out forwards;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-inter">
-
+<body class="bg-gray-50 min-h-screen text-gray-800 bg-hero-pattern">
     <!-- Header -->
-    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-black tracking-tight flex items-center">
-                <img src="assets\logo.png" alt="PizzaVerse Logo" class="mr-3 rounded-full">
-                PizzaVerse
+    <header class="bg-opacity-90 bg-white backdrop-filter backdrop-blur-md shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-2xl font-black tracking-tight flex items-center text-red-600 mb-4 md:mb-0">
+                <img src="assets/logo.png" alt="PizzaVerse Logo" class="h-12 w-12 mr-3 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300">
+                <span class="font-display">PizzaVerse</span>
             </div>
-            <nav class="hidden md:block">
-                <ul class="flex space-x-6 items-center">
-                    <li><a href="index.html" class="nav-link hover:text-blue-200 transition">Home</a></li>
-                    <li><a href="pizzas.html" class="nav-link hover:text-blue-200 transition">Pizzas</a></li>
-                    <li>
-                        <a href="cart.html" class="nav-link flex items-center hover:text-blue-200 transition">
-                            <i data-feather="shopping-cart" class="mr-2"></i>
-                            Cart 
-                            <span id="cart-count" class="bg-white text-blue-600 rounded-full px-2 py-1 text-xs ml-2">0</span>
+            
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-button" class="md:hidden flex items-center px-3 py-2 border rounded text-red-600 border-red-400 hover:text-red-800 hover:border-red-800">
+                <i data-feather="menu"></i>
+            </button>
+            
+            <!-- Navigation for desktop and mobile -->
+            <nav id="nav-menu" class="hidden md:block w-full md:w-auto">
+                <ul class="flex flex-col md:flex-row md:space-x-8 items-center mt-4 md:mt-0">
+                    <li class="py-2 md:py-0"><a href="index.html" class="nav-link relative font-medium text-gray-700 hover:text-red-900 after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Home</a></li>
+                    <li class="py-2 md:py-0"><a href="pizzas.html" class="nav-link relative font-medium text-gray-700 hover:text-red-900 after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Pizzas</a></li>
+                    <li class="py-2 md:py-0">
+                        <a href="cart.html" class="nav-link font-medium text-red-700 hover:text-red-900 flex items-center group border-b-2 border-red-600">
+                            <span class="relative">
+                                <i data-feather="shopping-cart" class="mr-2 text-red-700 transition-colors"></i>
+                                <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold shadow-md transition-all transform group-hover:scale-110">0</span>
+                            </span>
+                            Cart
                         </a>
                     </li>
-                    <li><a href="checkout.html" class="nav-link hover:text-blue-200 transition">Checkout</a></li>
-                    <li><a href="order_status.html" class="nav-link hover:text-blue-200 transition">Order Status</a></li>
+                    <li class="py-2 md:py-0"><a href="checkout.html" class="nav-link font-medium text-gray-700 hover:text-red-900 relative after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Checkout</a></li>
+                    <li class="py-2 md:py-0"><a href="order_status.html" class="nav-link font-medium text-gray-700 hover:text-red-900 relative after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Order Status</a></li>
                 </ul>
             </nav>
-            <div class="md:hidden">
-                <button id="mobile-menu-toggle" class="text-white">
-                    <i data-feather="menu"></i>
-                </button>
-            </div>
         </div>
     </header>
 
-    <!-- Mobile Menu (hidden by default) -->
-    <div id="mobile-menu" class="hidden bg-blue-700 text-white">
-        <ul class="py-4 space-y-2 text-center">
-            <li><a href="index.html" class="block py-2 hover:bg-blue-600">Home</a></li>
-            <li><a href="pizzas.html" class="block py-2 hover:bg-blue-600">Pizzas</a></li>
-            <li><a href="cart.html" class="block py-2 hover:bg-blue-600">Cart</a></li>
-            <li><a href="checkout.html" class="block py-2 hover:bg-blue-600">Checkout</a></li>
-            <li><a href="order_status.html" class="block py-2 hover:bg-blue-600">Order Status</a></li>
-        </ul>
-    </div>
-
     <!-- Cart Section -->
     <main class="container mx-auto px-4 py-12">
-        <section class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
-            <h1 class="text-4xl font-extrabold text-blue-800 mb-6 text-center">Your Cart</h1>
-
-            <div id="cart-items" class="space-y-6">
-                <!-- Cart items will be dynamically populated here -->
-                <p id="empty-cart-message" class="text-gray-500 text-center py-8 bg-gray-100 rounded-lg">
-                    Your cart is empty. Why not add some delicious pizzas?
-                </p>
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold font-display mb-2">
+                    <span class="text-red-600">Your</span> Pizza Cart
+                </h1>
+                <p class="text-gray-600">Review your selections before checkout</p>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-gray-300">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-xl font-semibold">Total:</span>
-                    <span class="text-2xl font-bold text-blue-600">$<span id="total-price">0.00</span></span>
+            <section class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="p-6 md:p-8">
+                    <div id="cart-items" class="space-y-4">
+                        <!-- Cart items will be dynamically populated here -->
+                        <div id="empty-cart-message" class="py-12 empty-cart-animation">
+                            <div class="flex flex-col items-center justify-center text-center">
+                                <div class="w-24 h-24 mb-6 text-gray-300">
+                                    <i data-feather="shopping-cart" class="w-full h-full"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-400 mb-2">Your cart is empty</h3>
+                                <p class="text-gray-500 mb-6 max-w-md">Looks like you haven't added any pizzas to your cart yet.</p>
+                                <a href="pizzas.html" class="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                                    <i data-feather="arrow-right" class="w-4 h-4 mr-2"></i>
+                                    Browse Our Menu
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cart-summary" class="mt-8 pt-6 border-t border-gray-200">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                            <div class="mb-4 md:mb-0">
+                                <span class="text-sm text-gray-500 block mb-1">Order Summary</span>
+                                <div class="flex items-baseline">
+                                    <span class="text-xl font-semibold mr-2">Total:</span>
+                                    <span class="text-2xl font-bold text-red-600">$<span id="total-price">0.00</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row w-full md:w-auto gap-4">
+                                <button 
+                                    id="continue-shopping" 
+                                    onclick="window.location.href='pizzas.html'" 
+                                    class="btn order-2 sm:order-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-medium transition-all flex items-center justify-center"
+                                >
+                                    <i data-feather="arrow-left" class="w-4 h-4 mr-2"></i>
+                                    Continue Shopping
+                                </button>
+                                <button 
+                                    id="proceed-checkout" 
+                                    onclick="goToCheckout()" 
+                                    class="btn order-1 sm:order-2 bg-gradient-to-r from-red-500 to-red-700 text-white py-3 px-6 rounded-lg font-medium hover:shadow-lg transition-all transform hover:-translate-y-1 duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-none flex items-center justify-center"
+                                    disabled
+                                >
+                                    <span>Checkout</span>
+                                    <i data-feather="arrow-right" class="w-4 h-4 ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <button 
-                        id="proceed-checkout" 
-                        onclick="goToCheckout()" 
-                        class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-3 rounded-lg font-semibold hover:scale-105 transition transform duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled
-                    >
-                        Proceed to Checkout
-                    </button>
-                    <button 
-                        id="continue-shopping" 
-                        onclick="window.location.href='pizzas.html'" 
-                        class="bg-gray-100 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
-                    >
-                        Continue Shopping
-                    </button>
+            </section>
+
+            <!-- Customer support section -->
+            <div class="mt-12 bg-gray-50 rounded-xl p-6 border border-gray-200 flex flex-col md:flex-row items-center">
+                <div class="mb-4 md:mb-0 md:mr-6 text-gray-400">
+                    <i data-feather="help-circle" class="w-12 h-12"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-1">Need help with your order?</h3>
+                    <p class="text-gray-600 mb-3">Our customer support team is available to assist you.</p>
+                    <a href="#" class="text-red-600 hover:text-red-800 font-medium inline-flex items-center">
+                        Contact Support
+                        <i data-feather="external-link" class="w-4 h-4 ml-1"></i>
+                    </a>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
+    <footer class="bg-gray-800 text-white py-12 mt-12">
         <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
             <div>
-                <h3 class="text-xl font-bold mb-4">PizzaVerse</h3>
-                <p class="text-gray-300">Delivering happiness, one slice at a time.</p>
+                <div class="flex items-center mb-4">
+                    <img src="assets/logo.png" alt="PizzaVerse Logo" class="h-10 w-10 mr-3 rounded-full">
+                    <h3 class="text-2xl font-bold text-red-400 font-display">PizzaVerse</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Delivering happiness, one slice at a time.</p>
+                <p class="text-gray-400">© 2025 PizzaVerse. All rights reserved.</p>
             </div>
             <div>
-                <h4 class="font-semibold mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="index.html" class="text-gray-300 hover:text-blue-400">Home</a></li>
-                    <li><a href="pizzas.html" class="text-gray-300 hover:text-blue-400">Menu</a></li>
-                    <li><a href="cart.html" class="text-gray-300 hover:text-blue-400">Cart</a></li>
+                <h4 class="font-semibold text-lg mb-4 text-red-400">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>About Us</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>Contact</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>FAQ</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>Terms & Conditions</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-semibold mb-3">Connect</h4>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="facebook"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="instagram"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="twitter"></i></a>
+                <h4 class="font-semibold text-lg mb-4 text-red-400">Connect With Us</h4>
+                <div class="flex space-x-4 mb-6">
+                    <a href="#" class="bg-gray-700 hover:bg-red-600 p-2 rounded-full text-white transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                    <a href="#" class="bg-gray-700 hover:bg-red-600 p-2 rounded-full text-white transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="bg-gray-700 hover:bg-red-600 p-2 rounded-full text-white transition-colors"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                </div>
+                <h4 class="font-semibold mb-2">Subscribe to our newsletter</h4>
+                <div class="flex">
+                    <input type="email" placeholder="Your email address" class="px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-gray-800">
+                    <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-r-lg transition-colors">
+                        <i data-feather="send" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Toast container for notifications -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             feather.replace();
-
+            
             // Mobile menu toggle
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            mobileMenuToggle.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+            const menuButton = document.getElementById('mobile-menu-button');
+            const navMenu = document.getElementById('nav-menu');
+            
+            menuButton.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+            
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2', 'shadow-lg');
+                    header.classList.remove('py-3', 'shadow-md');
+                } else {
+                    header.classList.add('py-3', 'shadow-md');
+                    header.classList.remove('py-2', 'shadow-lg');
+                }
             });
         });
     </script>

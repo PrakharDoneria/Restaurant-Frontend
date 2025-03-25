@@ -5,139 +5,390 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PizzaVerse - Craft Your Perfect Slice</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
+        /* Base styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
         /* Custom animations and styles */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
         .pizza-item {
+            animation: fadeIn 0.5s ease-out forwards;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        
         .pizza-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+        
+        .pizza-image-container {
+            overflow: hidden;
+        }
+        
+        .pizza-image {
+            transition: transform 0.5s ease;
+        }
+        
+        .pizza-item:hover .pizza-image {
+            transform: scale(1.05);
+        }
+        
         .toast-notification {
             animation: fadeIn 0.5s ease-out;
         }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+        
+        .animate-fadeOut {
+            animation: fadeOut 0.5s ease-in forwards;
+        }
+        
+        /* Category pill animation */
+        .category-pill {
+            transition: all 0.3s ease;
+        }
+        
+        .category-pill:hover {
+            transform: translateY(-2px);
+        }
+        
+        .category-pill.active {
+            animation: pulse 1s ease-in-out 1;
+        }
+        
+        /* Hero background pattern */
+        .bg-hero-pattern {
+            background-color: #f9fafb;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f87171' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
         /* Responsive mobile menu */
         @media (max-width: 768px) {
             .mobile-menu-hidden {
                 display: none;
             }
         }
+        
+        /* Skeleton loading animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        
+        /* Category badges */
+        .category-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            font-weight: 600;
+        }
+        
+        /* Scroll to top button */
+        .scroll-to-top {
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen font-inter">
-    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-black tracking-tight flex items-center">
-                <img src="assets\logo.png" alt="PizzaVerse Logo" class="mr-3 rounded-full">
-                PizzaVerse
+<body class="bg-gray-50 min-h-screen text-gray-800 bg-hero-pattern">
+    <!-- Header -->
+    <header class="bg-opacity-90 bg-white backdrop-filter backdrop-blur-md shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-2xl font-black tracking-tight flex items-center text-red-600 mb-4 md:mb-0">
+                <img src="assets/logo.png" alt="PizzaVerse Logo" class="h-12 w-12 mr-3 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300">
+                <span class="font-display">PizzaVerse</span>
             </div>
-            <nav class="hidden md:block">
-                <ul class="flex space-x-6 items-center">
-                    <li><a href="index.html" class="nav-link hover:text-blue-200 transition">Home</a></li>
-                    <li><a href="pizzas.html" class="nav-link hover:text-blue-200 transition">Pizzas</a></li>
-                    <li>
-                        <a href="cart.html" class="nav-link flex items-center hover:text-blue-200 transition">
-                            <i data-feather="shopping-cart" class="mr-2"></i>
-                            Cart 
-                            <span id="cart-count" class="bg-white text-blue-600 rounded-full px-2 py-1 text-xs ml-2">0</span>
+            
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-button" class="md:hidden flex items-center px-3 py-2 border rounded text-red-600 border-red-400 hover:text-red-800 hover:border-red-800">
+                <i data-feather="menu"></i>
+            </button>
+            
+            <!-- Navigation for desktop and mobile -->
+            <nav id="nav-menu" class="hidden md:block w-full md:w-auto">
+                <ul class="flex flex-col md:flex-row md:space-x-8 items-center mt-4 md:mt-0">
+                    <li class="py-2 md:py-0"><a href="index.html" class="nav-link relative font-medium text-red-700 hover:text-red-900 after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Home</a></li>
+                    <li class="py-2 md:py-0"><a href="pizzas.html" class="nav-link relative font-medium text-gray-700 hover:text-red-900 after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Pizzas</a></li>
+                    <li class="py-2 md:py-0">
+                        <a href="cart.html" class="nav-link font-medium text-gray-700 hover:text-red-900 flex items-center group">
+                            <span class="relative">
+                                <i data-feather="shopping-cart" class="mr-2 group-hover:text-red-700 transition-colors"></i>
+                                <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold shadow-md transition-all transform group-hover:scale-110">0</span>
+                            </span>
+                            Cart
                         </a>
                     </li>
-                    <li><a href="checkout.html" class="nav-link hover:text-blue-200 transition">Checkout</a></li>
-                    <li><a href="order_status.html" class="nav-link hover:text-blue-200 transition">Order Status</a></li>
+                    <li class="py-2 md:py-0"><a href="checkout.html" class="nav-link font-medium text-gray-700 hover:text-red-900 relative after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Checkout</a></li>
+                    <li class="py-2 md:py-0"><a href="order_status.html" class="nav-link font-medium text-gray-700 hover:text-red-900 relative after:absolute after:h-0.5 after:w-0 hover:after:w-full after:bottom-0 after:left-0 after:bg-red-700 after:transition-all">Order Status</a></li>
                 </ul>
             </nav>
-            <div class="md:hidden">
-                <button id="mobile-menu-toggle" class="text-white">
-                    <i data-feather="menu"></i>
-                </button>
-            </div>
         </div>
     </header>
 
     <!-- Mobile Menu (hidden by default) -->
-    <div id="mobile-menu" class="hidden bg-blue-700 text-white md:hidden">
+    <div id="mobile-menu" class="hidden bg-red-700 text-white md:hidden">
         <ul class="py-4 space-y-2 text-center">
-            <li><a href="index.html" class="block py-2 hover:bg-blue-600">Home</a></li>
-            <li><a href="pizzas.html" class="block py-2 hover:bg-blue-600">Pizzas</a></li>
-            <li><a href="cart.html" class="block py-2 hover:bg-blue-600">Cart</a></li>
-            <li><a href="checkout.html" class="block py-2 hover:bg-blue-600">Checkout</a></li>
-            <li><a href="order_status.html" class="block py-2 hover:bg-blue-600">Order Status</a></li>
+            <li><a href="index.html" class="block py-2 hover:bg-red-600">Home</a></li>
+            <li><a href="pizzas.html" class="block py-2 hover:bg-red-600">Pizzas</a></li>
+            <li><a href="cart.html" class="block py-2 hover:bg-red-600">Cart</a></li>
+            <li><a href="checkout.html" class="block py-2 hover:bg-red-600">Checkout</a></li>
+            <li><a href="order_status.html" class="block py-2 hover:bg-red-600">Order Status</a></li>
         </ul>
     </div>
 
-    <main class="container mx-auto px-4 py-12">
-        <section class="text-center mb-16">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800 mb-4">
-                Craft Your Perfect Slice
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <section class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold font-display mb-6">
+                <span class="text-red-600">Craft Your Perfect</span>
+                <span class="text-gray-800 italic">Slice of Heaven</span>
             </h1>
             <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
                 Explore artisan pizzas crafted with passion, featuring the freshest ingredients and bold flavors.
             </p>
         </section>
 
-        <div class="max-w-xl mx-auto mb-12">
-            <div class="relative">
-                <input 
-                    type="text" 
-                    id="search" 
-                    placeholder="Search for your favorite pizza..." 
-                    class="w-full px-6 py-3 pr-12 border-2 border-blue-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
-                >
-                <i data-feather="search" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        <div class="max-w-5xl mx-auto mb-8">
+            <!-- Search and filter container -->
+            <div class="flex flex-col gap-4">
+                <!-- Search bar -->
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="search" 
+                        placeholder="Search for your favorite pizza..." 
+                        class="w-full px-6 py-4 pr-12 border-2 border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-300 ease-in-out shadow-md"
+                    >
+                    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-700 transition-colors">
+                        <i data-feather="search" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <!-- Category filter pills -->
+                <div class="flex justify-center md:justify-start flex-wrap gap-2 py-2" id="category-filters">
+                    <button class="category-pill active px-4 py-2 rounded-full bg-red-600 text-white shadow-md hover:shadow-lg transition" data-category="all">
+                        All Pizzas
+                    </button>
+                    <!-- Category pills will be dynamically loaded here -->
+                    <div class="skeleton h-10 w-24 rounded-full"></div>
+                    <div class="skeleton h-10 w-28 rounded-full"></div>
+                    <div class="skeleton h-10 w-20 rounded-full"></div>
+                </div>
             </div>
         </div>
 
-        <div id="pizza-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Results count and sort controls -->
+        <div class="max-w-5xl mx-auto mb-8 flex flex-col sm:flex-row justify-between items-center">
+            <p id="results-count" class="text-gray-600 mb-4 sm:mb-0">
+                Showing all pizzas
+            </p>
+            <div class="flex items-center">
+                <label for="sort-by" class="mr-2 text-gray-600">Sort by:</label>
+                <select id="sort-by" class="rounded-lg border border-gray-200 p-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                    <option value="default">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name-asc">Name: A to Z</option>
+                    <option value="name-desc">Name: Z to A</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="pizza-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <!-- Skeleton loading -->
+            <div class="animate-pulse bg-white rounded-2xl overflow-hidden shadow-lg">
+                <div class="bg-gray-300 h-64 w-full"></div>
+                <div class="p-5">
+                    <div class="h-6 bg-gray-300 rounded w-3/4 mb-3"></div>
+                    <div class="h-4 bg-gray-300 rounded w-1/2 mb-3"></div>
+                    <div class="h-5 bg-gray-300 rounded w-1/4 mb-4"></div>
+                    <div class="h-10 bg-gray-300 rounded-md w-full"></div>
+                </div>
+            </div>
+            <div class="animate-pulse bg-white rounded-2xl overflow-hidden shadow-lg">
+                <div class="bg-gray-300 h-64 w-full"></div>
+                <div class="p-5">
+                    <div class="h-6 bg-gray-300 rounded w-3/4 mb-3"></div>
+                    <div class="h-4 bg-gray-300 rounded w-1/2 mb-3"></div>
+                    <div class="h-5 bg-gray-300 rounded w-1/4 mb-4"></div>
+                    <div class="h-10 bg-gray-300 rounded-md w-full"></div>
+                </div>
+            </div>
+            <div class="animate-pulse bg-white rounded-2xl overflow-hidden shadow-lg">
+                <div class="bg-gray-300 h-64 w-full"></div>
+                <div class="p-5">
+                    <div class="h-6 bg-gray-300 rounded w-3/4 mb-3"></div>
+                    <div class="h-4 bg-gray-300 rounded w-1/2 mb-3"></div>
+                    <div class="h-5 bg-gray-300 rounded w-1/4 mb-4"></div>
+                    <div class="h-10 bg-gray-300 rounded-md w-full"></div>
+                </div>
+            </div>
             <!-- Pizzas will be dynamically loaded here -->
+        </div>
+        
+        <!-- No results message (hidden by default) -->
+        <div id="no-results" class="hidden max-w-md mx-auto text-center py-12">
+            <img src="assets/empty-plate.svg" alt="No pizzas found" class="w-32 h-32 mx-auto mb-6 opacity-60">
+            <h3 class="text-xl font-semibold text-gray-500 mb-3">No pizzas found</h3>
+            <p class="text-gray-500 mb-6">We couldn't find any pizzas matching your search criteria.</p>
+            <button id="clear-filters" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all">
+                Clear Filters
+            </button>
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-white py-12">
+    <!-- Scroll to top button -->
+    <button id="scroll-to-top" class="scroll-to-top fixed bottom-8 right-8 bg-red-600 text-white p-3 rounded-full shadow-lg z-20">
+        <i data-feather="arrow-up" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Footer -->
+    <div class="wave-divider">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#1F2937" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-12 relative">
         <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
             <div>
-                <h3 class="text-xl font-bold mb-4">PizzaVerse</h3>
-                <p class="text-gray-300">Delivering happiness, one slice at a time.</p>
+                <div class="flex items-center mb-4">
+                    <img src="assets/logo.png" alt="PizzaVerse Logo" class="h-10 w-10 mr-3 rounded-full">
+                    <h3 class="text-2xl font-bold text-red-400 font-display">PizzaVerse</h3>
+                </div>
+                <p class="text-gray-300 mb-4">Delivering happiness, one slice at a time.</p>
+                <p class="text-gray-400">© 2025 PizzaVerse. All rights reserved.</p>
             </div>
             <div>
-                <h4 class="font-semibold mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="#" class="text-gray-300 hover:text-blue-400">About Us</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-blue-400">Contact</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-blue-400">FAQ</a></li>
+                <h4 class="font-semibold text-lg mb-4 text-red-400">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>About Us</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>Contact</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>FAQ</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex items-center"><i data-feather="chevron-right" class="w-4 h-4 mr-2 text-red-400"></i>Terms & Conditions</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-semibold mb-3">Connect</h4>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="facebook"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="instagram"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-blue-400"><i data-feather="twitter"></i></a>
+                <h4 class="font-semibold text-lg mb-4 text-red-400">Connect With Us</h4>
+                <div class="flex space-x-4 mb-6">
+                    <a href="#" class="bg-gray-700 hover:bg-red-600 p-2 rounded-full text-white transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
+                    <a href="#" class="bg-gray-700 hover:bg-red-600 p-2 rounded-full text-white transition-colors"><i data-feather="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="bg-gray-700 hover:bg-red-600 p-2 rounded-full text-white transition-colors"><i data-feather="twitter" class="w-5 h-5"></i></a>
+                </div>
+                <h4 class="font-semibold mb-2">Subscribe to our newsletter</h4>
+                <div class="flex">
+                    <input type="email" placeholder="Your email address" class="px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-full text-gray-800">
+                    <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-r-lg transition-colors">
+                        <i data-feather="send" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Toast container for notifications -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             feather.replace();
-
+            
             // Mobile menu toggle
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            const mobileMenu = document.getElementById('mobile-menu');
-
-            mobileMenuToggle.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+            const menuButton = document.getElementById('mobile-menu-button');
+            const navMenu = document.getElementById('nav-menu');
+            
+            menuButton.addEventListener('click', () => {
+                navMenu.classList.toggle('hidden');
+            });
+            
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2', 'shadow-lg');
+                    header.classList.remove('py-3', 'shadow-md');
+                } else {
+                    header.classList.add('py-3', 'shadow-md');
+                    header.classList.remove('py-2', 'shadow-lg');
+                }
+                
+                // Show or hide scroll to top button
+                const scrollToTopBtn = document.getElementById('scroll-to-top');
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            // Scroll to top functionality
+            document.getElementById('scroll-to-top').addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Clear filters button
+            document.getElementById('clear-filters').addEventListener('click', () => {
+                document.getElementById('search').value = '';
+                
+                // Reset category filters
+                const categoryButtons = document.querySelectorAll('.category-pill');
+                categoryButtons.forEach(button => {
+                    button.classList.remove('active', 'bg-red-600', 'text-white');
+                    button.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                
+                const allButton = document.querySelector('[data-category="all"]');
+                if (allButton) {
+                    allButton.classList.add('active', 'bg-red-600', 'text-white');
+                    allButton.classList.remove('bg-gray-200', 'text-gray-700');
+                }
+                
+                // Reset sort dropdown
+                document.getElementById('sort-by').value = 'default';
+                
+                // Show all pizzas
+                filterAndSortPizzas();
             });
         });
     </script>
-    <script src="js/main.js"></script>
+    <script src="js/pizzas.js"></script>
 </body>
 </html>
